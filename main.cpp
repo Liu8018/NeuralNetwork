@@ -8,13 +8,20 @@ int main()
     std::vector<std::vector<bool>> trainLabelBins;
     std::vector<std::vector<bool>> testLabelBins;
     loadMnistData_csv("/media/liu/D/linux-windows/dataset/MNIST_data2/mnist_train.csv",
-                      0.8,trainImgs,testImgs,trainLabelBins,testLabelBins);
+                      0.5,trainImgs,testImgs,trainLabelBins,testLabelBins);
     
     //建立模型
     SLFN slfnModel(784, 300, 10, 1, 0.03);
     
     //训练
-    int epochs = 6;
+    /*
+    slfnModel.ELM_IniWeight(trainImgs,trainLabelBins);
+    float score00 = slfnModel.validate(trainImgs,trainLabelBins);
+    float score01 = slfnModel.validate(testImgs,testLabelBins);
+    std::cout<<"score on training data:"<<score00<<std::endl;
+    std::cout<<"score on test data:"<<score01<<std::endl;
+    */
+    int epochs = 1;
     for(int ep=0;ep<epochs;ep++)
         for(int i=0;i<trainImgs.size();i++)
         {

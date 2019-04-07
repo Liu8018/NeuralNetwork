@@ -34,16 +34,6 @@ float SLFN::train(const cv::Mat &img, const cv::Mat &target)
     cv::Mat EH = EO*m_who.t();
     
     //更新权重矩阵
-    /*
-    std::cout<<"H.size:"<<H.size<<std::endl;
-    std::cout<<"EO.size:"<<EO.size<<std::endl;
-    std::cout<<"output.size:"<<output.size<<std::endl;
-    
-    std::cout<<"output:\n"<<output<<std::endl;
-    std::cout<<"1-output:\n"<<1-output<<std::endl;
-    std::cout<<"output.mul(1-output):\n"<<output.mul(1-output)<<std::endl;
-    */
-    
     m_who += m_lr*H.t()*( EO.mul(output.mul(1-output)) );
     m_wih += m_lr*input.t()*( EH.mul(H.mul(1-H)) );
     
@@ -70,4 +60,18 @@ float SLFN::validate(const std::vector<cv::Mat> &testImgs, const std::vector<std
     float score = calcScore(t,testTarget);
     
     return score;
+}
+
+void SLFN::ELM_IniWeight(const std::vector<cv::Mat> &imgs, const std::vector<std::vector<bool> > &trainLabelBins)
+{
+    cv::Mat input;
+    mats2lines(imgs,input,m_channels);
+    normalizeImg(input);
+    cv::Mat target;
+    labels2target(trainLabelBins,target);
+    
+    cv::Mat H = input*m_wih;
+    sigmoid(H);
+    
+    m_who = (H.t()*H).inv(1)*H.t()*target;
 }

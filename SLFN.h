@@ -8,6 +8,8 @@ class SLFN
 public:
     SLFN(int inodes, int hnodes, int onodes, int channels, float learningRate);
     
+    void ELM_IniWeight(const std::vector<cv::Mat> &imgs, const std::vector<std::vector<bool> > &trainLabelBins);
+    
     float train(const cv::Mat &img/*h x w*/, const cv::Mat &target/*1 x o*/);
     
     float validate(const std::vector<cv::Mat> &testImgs, const std::vector<std::vector<bool>> &testLabelBins);
